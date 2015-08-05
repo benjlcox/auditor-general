@@ -9,7 +9,7 @@ module AuditorGeneral
     AuditorGeneralLog.create(
       model_type: options[:model_type],
       model_id: options[:id],
-      action: options[:type],
+      action: options[:action],
       alterations: options[:alterations],
       message: options[:message],
       origin: AuditorGeneral.origin
