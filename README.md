@@ -10,7 +10,7 @@ Add this line to your application's Gemfile:
 gem 'auditor-general'
 ```
 
-And then execute:
+Then execute:
 
     $ bundle
 
@@ -18,9 +18,45 @@ Or install it yourself as:
 
     $ gem install auditor-general
 
+Then run the following command:
+
+```
+rails g auditor_general:install
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+Add the following to `ApplicationController` (or only to relevant controllers):
+
+```ruby
+include AuditorGeneral::Controller
+```
+This will ensure `curent_user.email` is logged with each action. If `current_user` is unavailable the controller name will be logged instead
+
+And then the following to all models that will be audited:
+
+```ruby
+include AuditorGeneral::Model
+```
+
+You can indicate which attributes to monitor with the following syntax:
+
+```ruby
+  auditable attributes: [:name]
+```
+
+And you can optionally turn off auditing create/destroy by including:
+
+```ruby
+  auditable attributes: [:name], create: false, destroy: false
+```
+
+You can log arbitrary actions not tied to models with this syntax:
+
+```ruby
+  AuditorGeneral.log(model_type: "SomeLibrary", action: "restart", message: "Restarting some library somewhere")
+```
+
 
 ## Contributing
 
