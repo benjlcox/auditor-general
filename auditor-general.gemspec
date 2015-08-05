@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'auditor/general/version'
+require 'auditor-general/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "auditor-general"
-  spec.version       = Auditor::General::VERSION
+  spec.version       = AuditorGeneral::VERSION
   spec.authors       = ["benjlcox"]
   spec.email         = ["ben@shopify.com"]
   spec.summary       = %q{TODO: Write a short summary. Required.}
