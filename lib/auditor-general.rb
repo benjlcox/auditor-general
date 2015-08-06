@@ -1,6 +1,7 @@
 require "auditor-general/version"
 require "auditor-general/model"
 require "auditor-general/controller"
+require "app/models/auditor_general_log"
 
 module AuditorGeneral
   mattr_accessor :origin

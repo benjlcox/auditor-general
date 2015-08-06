@@ -18,10 +18,6 @@ module AuditorGeneral
       def copy_migrations
         migration_template "create_auditor_general_log.rb", "db/migrate/create_auditor_general_log.rb"
       end
-
-      def copy_model
-        copy_file "auditor_general_log.rb", "app/models/auditor_general_log.rb"
-      end
     end
   end
 end
