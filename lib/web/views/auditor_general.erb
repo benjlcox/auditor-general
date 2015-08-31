@@ -1,0 +1,88 @@
+<div class='row'>
+    <div class="col-md-12">
+      <div class="btn-group" role="group" aria-label="...">
+        <div class="btn-group" role="group" aria-label="...">
+          <a class="btn btn-default dropdown-toggle" href="<%= url('/') %>">All</a>
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownModels" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Models
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownModels">
+            <% @models.each do |model| %>
+              <li><a href="<%= filter('model', model, @old_params) %>"><%= model %></a></li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="btn-group" role="group" aria-label="...">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Actions
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownActions">
+            <% @actions.each do |action| %>
+              <li><a href="<%= url('/?action=' + action + '&' + @old_params) %>"><%= action %></a></li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="btn-group" role="group" aria-label="...">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownOrigin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Origin
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownOrigin">
+            <% @origins.each do |origin| %>
+              <li><a href="<%= url('/?origin=' + origin + '&' + @old_params) %>"><%= origin %></a></li>
+            <% end %>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+</div>
+
+<div class='row'>
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <tr>
+          <th>ID</th>
+          <th>Model</th>
+          <th>Action</th>
+          <th>Model ID</th>
+          <th>Alterations</th>
+          <th>Message</th>
+          <th>Origin</th>
+          <th>Created</th>
+        <tr>
+        <% @logs.each do |log| %>
+          <tr>
+            <td class="col-md-1"><%= log.id %></td>
+            <td class="col-md-1"><%= log.model_type %></td>
+            <td class="col-md-1"><%= log.action %></td>
+            <td class="col-md-1"><a href="<%= log.model_type.downcase %>/<%= log.model_id %>"><%= log.model_id %></a></td>
+            <td class="col-md-2">
+              <% unless log.alterations.blank? %>
+                  <% log.alterations.each do |k,v| %>
+                    <p><b><%= k.humanize %></b>: <span class="label label-danger"><%= v.first || "nil" %></span> <span class="label label-success"><%= v.last %></span></p>
+                  <% end %>
+              <% end %>
+            </td>
+            <td class="col-md-2"><%= log.message %></td>
+            <td class="col-md-2"><%= log.origin %></td>
+            <td class="col-md-1"><%= log.created_at %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-3'></div>
+  <div class='col-md-6 text-center'>
+    <%= paginate @logs %>
+  </div>
+  <div class='col-md-3'></div>
+</div>
