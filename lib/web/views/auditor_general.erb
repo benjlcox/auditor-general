@@ -3,25 +3,45 @@
       <div class="panel panel-default">
         <div class="panel-heading">Filters</div>
         <div class="panel-body">
-          <form method="GET">
+          <form method="GET" class="form-inline">
+
             <label for="model">Model:</label>
             <select name="model[]" id="model" multiple="multiple">
                 <% @models.each_with_index do |model, i| %>
                   <option value=<%= model %>><%= model %></option>
                 <% end %>
             </select>
+
             <label for="action">Action:</label>
             <select name="action[]" id="action" multiple="multiple">
                 <% @actions.each_with_index do |action, i| %>
                   <option value=<%= action %>><%= action %></option>
                 <% end %>
             </select>
+
             <label for="origin">Origin:</label>
             <select name="origin[]" id="origin" multiple="multiple">
                 <% @origins.each_with_index do |origin, i| %>
                   <option value=<%= origin %>><%= origin %></option>
                 <% end %>
             </select>
+
+            <label>Start:</label>
+            <span class='input-group date' id='start'>
+                <input type='text' name="start" class='form-control'/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </span>
+
+            <label>Finish:</label>
+            <span class='input-group date' id='finish'>
+                <input type='text' name="finish" class='form-control'/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </span>
+
             <a href="<%= url('/') %>" class='btn btn-danger'>Clear</a>
             <button type='submit' class="btn btn-success">Filter</button>
           </form>
@@ -82,7 +102,10 @@
 </div>
 
 <script type="text/javascript">
-  $('#model').multiselect('select', <%= params[:model] || [] %>);
-  $('#action').multiselect('select', <%= params[:action] || [] %>);
-  $('#origin').multiselect('select', <%= params[:origin] || [] %>);
+  $(document).ready(function() {
+    $('#model').multiselect('select', <%= params[:model] || [] %>);
+    $('#action').multiselect('select', <%= params[:action] || [] %>);
+    $('#origin').multiselect('select', <%= params[:origin] || [] %>);
+    $('#start').data("DateTimePicker").date('<%= params[:start] || '' %>');
+  });
 </script>

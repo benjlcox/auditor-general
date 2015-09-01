@@ -32,8 +32,10 @@ module AuditorGeneral
       result = result.filter_model(params[:model])   if params[:model]
       result = result.filter_action(params[:action]) if params[:action]
       result = result.filter_origin(params[:origin]) if params[:origin]
+      result = result.start_date(Time.parse(params[:start])) unless params[:start].blank?
+      result = result.finish_date(Time.parse(params[:finish])) unless params[:finish].blank?
 
-      @logs = result.order(created_at: :desc).paginate(:page => params[:page], :per_page => params[:limit] || 10)
+      @logs = result.order(created_at: :desc).paginate(:page => params[:page], :per_page => params[:limit] || 25)
 
       erb :auditor_general
     end
