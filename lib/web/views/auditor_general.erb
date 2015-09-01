@@ -4,29 +4,24 @@
         <div class="panel-heading">Filters</div>
         <div class="panel-body">
           <form method="GET" class="form-inline">
-
-            <label for="model">Model:</label>
             <select name="model[]" id="model" multiple="multiple">
                 <% @models.each_with_index do |model, i| %>
                   <option value=<%= model %>><%= model %></option>
                 <% end %>
             </select>
 
-            <label for="action">Action:</label>
             <select name="action[]" id="action" multiple="multiple">
                 <% @actions.each_with_index do |action, i| %>
                   <option value=<%= action %>><%= action %></option>
                 <% end %>
             </select>
 
-            <label for="origin">Origin:</label>
             <select name="origin[]" id="origin" multiple="multiple">
                 <% @origins.each_with_index do |origin, i| %>
                   <option value=<%= origin %>><%= origin %></option>
                 <% end %>
             </select>
 
-            <label>Start:</label>
             <span class='input-group date' id='start'>
                 <input type='text' name="start" class='form-control'/>
                 <span class="input-group-addon">
@@ -34,7 +29,8 @@
                 </span>
             </span>
 
-            <label>Finish:</label>
+            <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+
             <span class='input-group date' id='finish'>
                 <input type='text' name="finish" class='form-control'/>
                 <span class="input-group-addon">
@@ -42,8 +38,12 @@
                 </span>
             </span>
 
-            <a href="<%= url('/') %>" class='btn btn-danger'>Clear</a>
-            <button type='submit' class="btn btn-success">Filter</button>
+            <div class="btn-group" role="group" aria-label="...">
+              <a href="<%= url('/') %>" class='btn btn-danger'>Clear</a>
+              <button type='submit' class="btn btn-success">Filter</button>
+            </div>
+
+            <a href="<%= url('/csv?' + params.to_query) %>" class='btn btn-primary pull-right'>Export as CSV</a>
           </form>
         </div>
       </div>
