@@ -16,16 +16,6 @@ module AuditorGeneral
          }
         will_paginate collection, options
       end
-
-      def filter(type, query, params)
-        params = Rack::Utils.parse_nested_query(params)
-        if params[type]
-          params[type].push(query)
-        else
-          params[type] = [query]
-        end
-        url('/?' + params.to_query)
-      end
     end
 
     set :static, true
@@ -38,14 +28,13 @@ module AuditorGeneral
       @actions = AuditorGeneralLog.all.pluck(:action).compact.uniq
       @origins = AuditorGeneralLog.all.pluck(:origin).compact.uniq
 
-      result = AuditorGeneralLog.all
-      result = result.where(model_type: params[:model]) if params[:model]
-      result = result.where(action: params[:action])    if params[:action]
-      result = result.where(origin: params[:origin])    if params[:origin]
-
-      @old_params = params.to_query
+      result = AuditorGeneralLog.where(nil)
+      result = result.filter_model(params[:model])   if params[:model]
+      result = result.filter_action(params[:action]) if params[:action]
+      result = result.filter_origin(params[:origin]) if params[:origin]
 
       @logs = result.order(created_at: :desc).paginate(:page => params[:page], :per_page => params[:limit] || 10)
+
       erb :auditor_general
     end
 

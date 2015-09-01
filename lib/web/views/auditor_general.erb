@@ -1,43 +1,31 @@
 <div class='row'>
     <div class="col-md-12">
-      <div class="btn-group" role="group" aria-label="...">
-        <div class="btn-group" role="group" aria-label="...">
-          <a class="btn btn-default dropdown-toggle" href="<%= url('/') %>">All</a>
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownModels" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Models
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownModels">
-            <% @models.each do |model| %>
-              <li><a href="<%= filter('model', model, @old_params) %>"><%= model %></a></li>
-            <% end %>
-          </ul>
+      <div class="panel panel-default">
+        <div class="panel-heading">Filters</div>
+        <div class="panel-body">
+          <form method="GET">
+            <label for="model">Model:</label>
+            <select name="model[]" id="model" multiple="multiple">
+                <% @models.each_with_index do |model, i| %>
+                  <option value=<%= model %>><%= model %></option>
+                <% end %>
+            </select>
+            <label for="action">Action:</label>
+            <select name="action[]" id="action" multiple="multiple">
+                <% @actions.each_with_index do |action, i| %>
+                  <option value=<%= action %>><%= action %></option>
+                <% end %>
+            </select>
+            <label for="origin">Origin:</label>
+            <select name="origin[]" id="origin" multiple="multiple">
+                <% @origins.each_with_index do |origin, i| %>
+                  <option value=<%= origin %>><%= origin %></option>
+                <% end %>
+            </select>
+            <a href="<%= url('/') %>" class='btn btn-danger'>Clear</a>
+            <button type='submit' class="btn btn-success">Filter</button>
+          </form>
         </div>
-
-        <div class="btn-group" role="group" aria-label="...">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Actions
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownActions">
-            <% @actions.each do |action| %>
-              <li><a href="<%= url('/?action=' + action + '&' + @old_params) %>"><%= action %></a></li>
-            <% end %>
-          </ul>
-        </div>
-
-        <div class="btn-group" role="group" aria-label="...">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownOrigin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Origin
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownOrigin">
-            <% @origins.each do |origin| %>
-              <li><a href="<%= url('/?origin=' + origin + '&' + @old_params) %>"><%= origin %></a></li>
-            <% end %>
-          </ul>
-        </div>
-
       </div>
     </div>
 </div>
@@ -46,7 +34,7 @@
   <div class="col-md-12">
     <div class="table-responsive">
       <table class="table table-hover">
-        <tr>
+        <tr class=>
           <th>ID</th>
           <th>Model</th>
           <th>Action</th>
@@ -58,10 +46,14 @@
         <tr>
         <% @logs.each do |log| %>
           <tr>
-            <td class="col-md-1"><%= log.id %></td>
-            <td class="col-md-1"><%= log.model_type %></td>
-            <td class="col-md-1"><%= log.action %></td>
-            <td class="col-md-1"><a href="<%= log.model_type.downcase %>/<%= log.model_id %>"><%= log.model_id %></a></td>
+            <td class="col-md-1 text-center"><%= log.id %></td>
+            <td class="col-md-1 text-center"><%= log.model_type %></td>
+            <td class="col-md-1 text-center"><%= log.action %></td>
+            <td class="col-md-1">
+              <% unless log.model_id.nil? %>
+                <a class='btn btn-default form-control' href="<%= url(log.model_type.downcase + '/' + log.model_id.to_s) %>"><%= log.model_id %></a>
+              <% end %>
+            </td>
             <td class="col-md-2">
               <% unless log.alterations.blank? %>
                   <% log.alterations.each do |k,v| %>
@@ -70,8 +62,10 @@
               <% end %>
             </td>
             <td class="col-md-2"><%= log.message %></td>
-            <td class="col-md-2"><%= log.origin %></td>
-            <td class="col-md-1"><%= log.created_at %></td>
+            <td class="col-md-2 text-center"><%= log.origin %></td>
+            <td class="col-md-1 text-center">
+              <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="<%= log.created_at.strftime('%H:%M:%S (%z)') %>"><%= log.created_at.strftime('%d/%m/%y') %></button>
+            </td>
           </tr>
         <% end %>
       </table>
@@ -86,3 +80,9 @@
   </div>
   <div class='col-md-3'></div>
 </div>
+
+<script type="text/javascript">
+  $('#model').multiselect('select', <%= params[:model] || [] %>);
+  $('#action').multiselect('select', <%= params[:action] || [] %>);
+  $('#origin').multiselect('select', <%= params[:origin] || [] %>);
+</script>
