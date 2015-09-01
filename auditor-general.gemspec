@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ben@shopify.com"]
   spec.summary       = "Simple and explicit user action auditing for Rails"
   spec.description   = "Simple and explicit user action auditing for Rails"
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/Shopify/auditor-general"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -19,7 +19,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "rails", ">= 4.0.0"
+  spec.add_dependency "sinatra", ">= 1.4.6"
+  spec.add_dependency 'will_paginate', '~> 3.0.6'
+  spec.add_dependency 'will_paginate-bootstrap', '~> 1.0.1'
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
+
+
 end

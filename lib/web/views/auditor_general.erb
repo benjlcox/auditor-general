@@ -1,0 +1,111 @@
+<div class='row'>
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">Filters</div>
+        <div class="panel-body">
+          <form method="GET" class="form-inline">
+            <select name="model[]" id="model" multiple="multiple">
+                <% @models.each_with_index do |model, i| %>
+                  <option value=<%= model %>><%= model %></option>
+                <% end %>
+            </select>
+
+            <select name="action[]" id="action" multiple="multiple">
+                <% @actions.each_with_index do |action, i| %>
+                  <option value=<%= action %>><%= action %></option>
+                <% end %>
+            </select>
+
+            <select name="origin[]" id="origin" multiple="multiple">
+                <% @origins.each_with_index do |origin, i| %>
+                  <option value=<%= origin %>><%= origin %></option>
+                <% end %>
+            </select>
+
+            <span class='input-group date' id='start'>
+                <input type='text' name="start" class='form-control'/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </span>
+
+            <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+
+            <span class='input-group date' id='finish'>
+                <input type='text' name="finish" class='form-control'/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </span>
+
+            <div class="btn-group" role="group" aria-label="...">
+              <a href="<%= url('/') %>" class='btn btn-danger'>Clear</a>
+              <button type='submit' class="btn btn-success">Filter</button>
+            </div>
+
+            <a href="<%= url('/csv?' + params.to_query) %>" class='btn btn-primary pull-right'>Export as CSV</a>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class='row'>
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <tr class=>
+          <th>ID</th>
+          <th>Model</th>
+          <th>Action</th>
+          <th>Model ID</th>
+          <th>Alterations</th>
+          <th>Message</th>
+          <th>Origin</th>
+          <th>Created</th>
+        <tr>
+        <% @logs.each do |log| %>
+          <tr>
+            <td class="col-md-1 text-center"><%= log.id %></td>
+            <td class="col-md-1 text-center"><%= log.model_type %></td>
+            <td class="col-md-1 text-center"><%= log.action %></td>
+            <td class="col-md-1">
+              <% unless log.model_id.nil? %>
+                <a class='btn btn-default form-control' href="<%= url(log.model_type.downcase + '/' + log.model_id.to_s) %>"><%= log.model_id %></a>
+              <% end %>
+            </td>
+            <td class="col-md-2">
+              <% unless log.alterations.blank? %>
+                  <% log.alterations.each do |k,v| %>
+                    <p><b><%= k.humanize %></b>: <span class="label label-danger"><%= v.first || "nil" %></span> <span class="label label-success"><%= v.last %></span></p>
+                  <% end %>
+              <% end %>
+            </td>
+            <td class="col-md-2"><%= log.message %></td>
+            <td class="col-md-2 text-center"><%= log.origin %></td>
+            <td class="col-md-1 text-center">
+              <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="<%= log.created_at.strftime('%H:%M:%S (%z)') %>"><%= log.created_at.strftime('%d/%m/%y') %></button>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-md-3'></div>
+  <div class='col-md-6 text-center'>
+    <%= paginate @logs %>
+  </div>
+  <div class='col-md-3'></div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#model').multiselect('select', <%= params[:model] || [] %>);
+    $('#action').multiselect('select', <%= params[:action] || [] %>);
+    $('#origin').multiselect('select', <%= params[:origin] || [] %>);
+    $('#start').data("DateTimePicker").date('<%= params[:start] || '' %>');
+  });
+</script>
