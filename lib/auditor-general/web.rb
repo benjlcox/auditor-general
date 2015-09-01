@@ -8,8 +8,12 @@ require 'csv'
 
 module AuditorGeneral
   class Web < Sinatra::Base
-    helpers WillPaginate::Sinatra::Helpers
+    set :static, true
+    set :root, File.expand_path(File.dirname(__FILE__) + "../../web")
+    set :public_folder, proc { "#{root}/assets" }
+    set :views, proc { "#{root}/views" }
 
+    helpers WillPaginate::Sinatra::Helpers
     helpers do
       def paginate(collection)
          options = {
@@ -18,11 +22,6 @@ module AuditorGeneral
         will_paginate collection, options
       end
     end
-
-    set :static, true
-    set :root, File.expand_path(File.dirname(__FILE__) + "../../web")
-    set :public_folder, proc { "#{root}/assets" }
-    set :views, proc { "#{root}/views" }
 
     def filter_logs(params)
       result = AuditorGeneralLog.where(nil)
