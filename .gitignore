@@ -13,5 +13,4 @@
 *.o
 *.a
 *.log
-*.keep
 mkmf.log
