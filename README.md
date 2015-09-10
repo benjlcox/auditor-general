@@ -18,10 +18,16 @@ Or install it yourself as:
 
     $ gem install auditor-general
 
-Then run the following command:
+Then run the following command to create the necessary migration:
 
 ```
 rails g auditor_general:install
+```
+
+Then do a normal Rails migration:
+
+```
+rake db:migrate
 ```
 
 ## Usage
@@ -33,7 +39,7 @@ include AuditorGeneral::Controller
 ```
 This will ensure `curent_user.email` is logged with each action. If `current_user` is unavailable the controller name will be logged instead
 
-And then the following to all models that will be audited:
+Then add the following to all models that will be audited:
 
 ```ruby
 include AuditorGeneral::Model
@@ -60,7 +66,7 @@ You can log arbitrary actions not tied to models with this syntax:
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/auditor-general/fork )
+1. Fork it ( https://github.com/Shopify/auditor-general/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
