@@ -63,6 +63,15 @@ You can log arbitrary actions not tied to models with this syntax:
   AuditorGeneral.log(model_type: "SomeLibrary", action: "restart", message: "Restarting some library somewhere")
 ```
 
+## Web View
+
+Auditor General includes an optional web view for log files with some simple filtering features built in. To access this dashboard simply add the following to your `routes.rb` file:
+
+```ruby
+  mount AuditorGeneral::Web => '/auditor-general'
+```
+
+Importantly, this will create a public route to view the dashboard. You an restrict the route to, for example, a certain user role using a [constraint.](http://guides.rubyonrails.org/routing.html#request-based-constraints)
 
 ## Contributing
 
