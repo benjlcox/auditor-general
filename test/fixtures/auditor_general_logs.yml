@@ -1,0 +1,25 @@
+user_create:
+  model_type: User
+  model_id: 1
+  action: create
+  alterations: nil
+  message: nil
+  origin: admin1@example.com
+  created_at: 2015-01-01
+
+user_destroy:
+  model_type: User
+  model_id: 1
+  action: destroy
+  alterations: nil
+  message: nil
+  origin: admin2@example.com
+  created_at: 2016-01-01
+
+update_alteration:
+  model_type: Stuff
+  model_id: 3
+  action: update
+  alterations: {name: [bob,eric]}
+  message:
+  origin: admin3@example.com
